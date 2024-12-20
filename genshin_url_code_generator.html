@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genshin URL Code Generator</title>
+</head>
+<body style="text-align: center;">
+    <h1>Genshin URL Code Generator</h1>
+    <h2>For multiple codes, separate with space.</h2>
+    <form id=>
+        <label for="codeInput">Enter Code(s):</label><br>
+        <textarea id="codeInput" rows="4" cols="50"></textarea><br>
+        <input type="button" value="Submit" onclick="urlGenerator()"/>
+    </form>
+    <br><br>
+    <label for="urlOutput">The generated URLs are:</label><br>
+    <textarea id="urlOutput" rows="4" cols="50" readonly></textarea><br>
+</body>
+</html>
+
+<script>
+    function urlGenerator(){
+        let urlFormat="https://genshin.hoyoverse.com/en/gift?code="
+        let codeInput = document.getElementById("codeInput").value;
+        if (!codeInput.trim()){
+            document.getElementById("codeInput").value = "";
+            document.getElementById("urlOutput").value = "";
+            return;
+        }
+        let modifiedInput = codeInput.replace(/\n/g, " ");
+        let codeArray = modifiedInput.split(" ").filter(code => code.trim());
+        
+
+        for(i=0; i<codeArray.length; i++){
+            codeArray[i] = urlFormat + codeArray[i]; 
+        }
+        let urlOutput = codeArray.join('\n');
+        document.getElementById("urlOutput").value = urlOutput;
+        document.querySelectorAll("textarea").forEach(t => t.dispatchEvent(new Event('input', { bubbles: true, cancelable: true })));
+    }
+
+    // This SHOULD make the textareas autoresize by themselves
+    document.querySelectorAll("textarea").forEach(function(textarea) {
+        textarea.style.height = textarea.scrollHeight + "px";
+        textarea.style.overflowY = "hidden";
+
+        textarea.addEventListener("input", function() {
+            this.style.height = "auto";
+            this.style.height = this.scrollHeight + "px";
+        });
+    });
+</script>
